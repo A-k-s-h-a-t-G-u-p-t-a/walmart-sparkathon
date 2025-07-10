@@ -38,10 +38,10 @@ export default function Dashboard() {
                   Products
                 </Link>
                 <Link 
-                  href="/services"
+                  href="/canvas"
                   className="hover:bg-[#0066cc] px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
-                  Services
+                  Canvas
                 </Link>
               </div>
             </div>
