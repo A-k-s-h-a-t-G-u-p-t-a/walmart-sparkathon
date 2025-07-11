@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { useGLTF, Html } from '@react-three/drei'
 import { useRouter } from 'next/navigation'
+import * as THREE from 'three'
 
 export default function BoxLayout() {
   // Load the cardboard GLB model
@@ -51,6 +52,33 @@ export default function BoxLayout() {
     router.push(`/box/${boxId}`)
   }
 
+  function getBoxScene(isSelected: boolean, isDimmed: boolean) {
+    const cloned = scene.clone(true)
+    cloned.traverse((child: any) => {
+      if (child.isMesh && child.material) {
+        // Clone the original material to preserve texture
+        const originalMaterial = child.material
+        const newMaterial = originalMaterial.clone()
+        // Highlight color overlay (using color.multiply or color.set)
+        if (isSelected) {
+          newMaterial.color.set('#FFD700')
+          newMaterial.emissive.set('#FFD700')
+          newMaterial.emissiveIntensity = 0.3
+          newMaterial.opacity = 1
+          newMaterial.transparent = false
+        } else if (isDimmed) {
+          newMaterial.opacity = 0.3
+          newMaterial.transparent = true
+        } else {
+          newMaterial.opacity = 1
+          newMaterial.transparent = false
+        }
+        child.material = newMaterial
+      }
+    })
+    return cloned
+  }
+
   return (
     <>
       {/* Container with wireframe boundaries only */}
@@ -63,75 +91,52 @@ export default function BoxLayout() {
       </mesh>
 
       {/* Render boxes with interactions */}
-      {boxes.map((box) => (
-        <group key={box.id}>
-          {/* Highlight outline for selected box */}
-          {selectedBox === box.id && (
-            <mesh position={box.position} scale={[box.scale[0] * 1.1, box.scale[1] * 1.1, box.scale[2] * 1.1]}>
-              <boxGeometry args={[1, 1, 1]} />
-              <meshBasicMaterial 
-                color="#FFD700" 
-                wireframe 
-                transparent 
-                opacity={0.8}
-              />
-            </mesh>
-          )}
-          
-          {/* Hover outline */}
-          {hoveredBox === box.id && selectedBox !== box.id && (
-            <mesh position={box.position} scale={[box.scale[0] * 1.05, box.scale[1] * 1.05, box.scale[2] * 1.05]}>
-              <boxGeometry args={[1, 1, 1]} />
-              <meshBasicMaterial 
-                color="#FFFF00" 
-                wireframe 
-                transparent 
-                opacity={0.4}
-              />
-            </mesh>
-          )}
-
-          {/* Cardboard box */}
-          <group 
-            position={box.position} 
-            scale={box.scale}
-            onClick={(e) => {
-              e.stopPropagation()
-              handleBoxClick(box.id)
-            }}
-            onDoubleClick={(e) => {
-              e.stopPropagation()
-              handleBoxDoubleClick(box.id)
-            }}
-            onPointerEnter={() => setHoveredBox(box.id)}
-            onPointerLeave={() => setHoveredBox(null)}
-          >
-            <primitive object={scene.clone()} />
-          </group>
-
-          {/* Package information display - subtle and fixed position */}
-          {selectedBox === box.id && (
-            <Html 
-              position={[-6, 2, 0]} 
-              center
+      {boxes.map((box) => {
+        const isSelected = selectedBox === box.id
+        const isDimmed = selectedBox !== null && !isSelected
+        return (
+          <group key={box.id}>
+            <group 
+              position={box.position} 
+              scale={box.scale}
+              onClick={(e) => {
+                e.stopPropagation()
+                handleBoxClick(box.id)
+              }}
+              onDoubleClick={(e) => {
+                e.stopPropagation()
+                handleBoxDoubleClick(box.id)
+              }}
+              onPointerEnter={() => setHoveredBox(box.id)}
+              onPointerLeave={() => setHoveredBox(null)}
             >
-              <div className="bg-black bg-opacity-70 text-white p-3 rounded text-xs max-w-48 backdrop-blur-sm">
-                <h4 className="text-sm font-semibold text-yellow-400 mb-1">{box.name}</h4>
-                <p className="text-gray-300 mb-2 text-xs">{box.contents}</p>
-                
-                <div className="space-y-1">
-                  {box.packaging.map((layer, index) => (
-                    <div key={index} className="flex items-center space-x-2 text-xs text-gray-200">
-                      <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                      <span>{layer}</span>
-                    </div>
-                  ))}
+              <primitive object={getBoxScene(isSelected, isDimmed)} />
+            </group>
+
+            {/* Package information display - subtle and fixed position */}
+            {isSelected && (
+              <Html 
+                position={[-6, 2, 0]} 
+                center
+              >
+                <div className="bg-black bg-opacity-70 text-white p-3 rounded text-xs max-w-48 backdrop-blur-sm">
+                  <h4 className="text-sm font-semibold text-yellow-400 mb-1">{box.name}</h4>
+                  <p className="text-gray-300 mb-2 text-xs">{box.contents}</p>
+                  
+                  <div className="space-y-1">
+                    {box.packaging.map((layer, index) => (
+                      <div key={index} className="flex items-center space-x-2 text-xs text-gray-200">
+                        <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                        <span>{layer}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Html>
-          )}
-        </group>
-      ))}
+              </Html>
+            )}
+          </group>
+        )
+      })}
 
       {/* Instructions - show only when hovering */}
       {hoveredBox !== null && (
