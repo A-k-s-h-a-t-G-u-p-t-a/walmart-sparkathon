@@ -2,12 +2,21 @@
 
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import BoxLayout from './BoxLayout'
+import MapOverlay from '../../../components/MapOverlay'
 
 export default function PackagingPage() {
+  const [isMapVisible, setIsMapVisible] = useState(false)
+
   return (
-    <div className="h-screen w-full bg-gradient-to-br from-blue-100 via-blue-50 to-yellow-50">
+    <div className="h-screen w-full bg-gradient-to-br from-blue-100 via-blue-50 to-yellow-50 relative">
+      {/* Map Overlay */}
+      <MapOverlay 
+        isVisible={isMapVisible} 
+        onToggle={() => setIsMapVisible(!isMapVisible)} 
+      />
+      
       <Canvas 
         camera={{ position: [8, 6, 12], fov: 60 }}
         onClick={(e) => {
