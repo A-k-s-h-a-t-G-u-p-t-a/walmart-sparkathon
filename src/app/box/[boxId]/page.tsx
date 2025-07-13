@@ -35,6 +35,65 @@ const boxData = {
     weight: "8.7 kg",
     fragility: "High",
     handlingInstructions: "THIS SIDE UP - Fragile electronics inside"
+  },
+  '3': {
+    id: 3,
+    name: "Electronics Package",
+    contents: "Apple Ipad Air",
+    packaging: [
+      { layer: "Outer Cardboard Box", description: "Corrugated cardboard protection", color: "#8B4513" },
+      { layer: "Foam Padding", description: "High-density foam insert", color: "#FFFACD" },
+      { layer: "Anti-static Packing", description: "Anti-static bubble wrap", color: "#E0E0E0" },
+      { layer: "Bubble Wrap", description: "Air-cushioned protection", color: "#2F4F4F" }
+    ],
+    dimensions: "24cm x 18cm x 0.7cm",
+    weight: "0.5 kg",
+    fragility: "High",
+    handlingInstructions: "THIS SIDE UP - Fragile electronics inside"
+  },
+  '4': {
+    id: 4,
+    name: "Books and Media",
+    contents: "Thriller Novel Collection",
+    packaging: [
+      { layer: "Reinforced Cardboard Box", description: "Sturdy protection for books", color: "#8B4513" },
+      { layer: "Bubble Wrap", description: "Air-cushioned protection", color: "#FFFACD" },
+      { layer: "Shrink Wrap", description: "Tight-fitting plastic wrap", color: "#E0E0E0" },
+      { layer: "Book Collection", description: "Collection of thriller novels", color: "#2F4F4F" }
+    ],
+    dimensions: "24cm x 18cm x 15cm",
+    weight: "4.5 kg",
+    fragility: "Low",
+    handlingInstructions: "Handle with care - Books inside"
+  },
+  '5': {
+    id: 5,
+    name: "Clothes and Apparel",
+    contents: "Football Jersey Set",
+    packaging: [
+      { layer: "Poly Mailer Bag", description: "Lightweight and durable bag", color: "#8B4513" },
+      { layer: "Bubble Wrap", description: "Air-cushioned protection", color: "#FFFACD" },
+      { layer: "Clothing Tag", description: "Tag with size and care instructions", color: "#E0E0E0" },
+      { layer: "Football Jersey Set", description: "Set of football jerseys", color: "#2F4F4F" }
+    ],
+    dimensions: "24cm x 45cm x 15cm",
+    weight: "0.2 kg",
+    fragility: "Low",
+    handlingInstructions: "Handle with care - Clothing inside"
+  },
+  '6': {
+    id: 6,
+    name: "Sports Equipment",
+    contents: "Yoga Mat",
+    packaging: [
+      { layer: "Plastic Wrap", description: "Protective plastic covering", color: "#8B4513" },
+      { layer: "Cardboard Sleeve", description: "Sturdy cardboard protection", color: "#FFFACD" },
+      { layer: "Yoga Mat", description: "High-density foam mat", color: "#E0E0E0" },
+    ],
+    dimensions: "24cm x 45cm x 15cm",
+    weight: "0.2 kg",
+    fragility: "Low",
+    handlingInstructions: "Handle with care - Sports Equipment inside"
   }
 }
 

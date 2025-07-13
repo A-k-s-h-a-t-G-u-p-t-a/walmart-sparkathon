@@ -30,7 +30,9 @@ export default function PackagingPage() {
         <spotLight position={[0, 15, 0]} intensity={0.8} angle={0.3} penumbra={1} color="#004c91" />
         <fog attach="fog" args={['#e6f3ff', 20, 50]} />
         <Suspense fallback={null}>
-          <BoxLayout />
+          
+      <BoxLayout />
+    
         </Suspense>
         <OrbitControls 
           enablePan={true}
